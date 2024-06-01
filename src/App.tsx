@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useReducer, useState } from "react";
 
 interface MyButtonProps {
     title: string;
@@ -7,28 +7,54 @@ interface MyButtonProps {
     setIsCatKing: Dispatch<SetStateAction<boolean>>;
 }
 
-function CatStatus({ isCatKing }: { isCatKing: boolean }) {
-    return <>cat status: {String(isCatKing)}</>;
+function CatStatus({ catPoint }: { catPoint: number }) {
+    return (
+        <>
+            cat point: {catPoint}
+            <br />
+            cat status: {catPoint >= 100 ? "👑" : "normal"}
+        </>
+    );
 }
 
-function MyButton({ title, disabled, isCatKing, setIsCatKing }: MyButtonProps) {
+interface CatState {
+    point: number;
+}
+
+type CatPointAction = { type: "reset" } | { type: "setCount"; value: CatState["point"] };
+
+function CatFeed() {
+    const initialCatPoint = { point: 0 };
+
+    function catPointReducer(state: CatState, action: CatPointAction) {
+        switch (action.type) {
+            case "reset":
+                return initialCatPoint;
+            case "setCount":
+                return { point: action.value };
+        }
+    }
+
+    const [cat, dispatchCat] = useReducer(catPointReducer, initialCatPoint);
+    const addCatPoint = (add: number) => dispatchCat({ type: "setCount", value: cat.point + add });
+    const resetCatPoint = () => dispatchCat({ type: "reset" });
+
     return (
-        <button disabled={disabled} onClick={() => setIsCatKing(!isCatKing)}>
-            {title}
-        </button>
+        <>
+            <h2>cute cat status</h2>
+            <CatStatus catPoint={cat.point} />
+            <h3>feed cute cat</h3>
+            <button onClick={() => addCatPoint(5)}>feed cat (5)</button>
+            <button onClick={() => addCatPoint(15)}>feed cat (15)</button>
+            <button onClick={() => resetCatPoint()}>reset cat</button>
+        </>
     );
 }
 
 export default function App() {
-    const [isCatKing, setIsCatKing] = useState(false);
     return (
         <>
-            <h2>cute cat status</h2>
-            <CatStatus isCatKing={isCatKing} />
-            <h3>cute cat</h3>
-            <MyButton title={"cute cat button"} disabled={false} isCatKing={isCatKing} setIsCatKing={setIsCatKing} />
-            <h3>cute disabled cat</h3>
-            <MyButton title={"cute disabled cat button"} disabled={true} isCatKing={isCatKing} setIsCatKing={setIsCatKing} />
+            <CatFeed />
         </>
     );
 }
