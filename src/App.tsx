@@ -8,11 +8,14 @@ interface MyButtonProps {
 }
 
 function CatStatus({ catPoint }: { catPoint: number }) {
+    const isCatKing = catPoint >= 100;
     return (
         <>
             cat point: {catPoint}
             <br />
-            cat status: {catPoint >= 100 ? "👑" : "normal"}
+            cat status: {isCatKing ? "👑" : "normal"}
+            <br />
+            <img src={isCatKing ? "https://i.imgur.com/4xsSgSG.jpeg" : "https://i.imgur.com/DiWMA7i.jpeg"} alt="" height={200} />
         </>
     );
 }
