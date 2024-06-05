@@ -1,12 +1,5 @@
 import React, { Dispatch, SetStateAction, useReducer, useState } from "react";
 
-interface MyButtonProps {
-    title: string;
-    disabled: boolean;
-    isCatKing: boolean;
-    setIsCatKing: Dispatch<SetStateAction<boolean>>;
-}
-
 function CatStatus({ catPoint }: { catPoint: number }) {
     const isCatKing = catPoint >= 100;
     return (
