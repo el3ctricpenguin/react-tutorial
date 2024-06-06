@@ -9,7 +9,7 @@ export default function CatPage() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <h1>🐈‍⬛ real cat page on Next 🐈‍⬛</h1>
+                <h1>🐈‍⬛ real cat page 🐈‍⬛</h1>
                 <CatDonation />
             </main>
         </>
